@@ -60,5 +60,37 @@
             <small>Fokuskan review untuk mempercepat approval.</small>
         </article>
     </section>
+
+    <section class="dashboard-section">
+        <h2 class="dashboard-section-title">Top Dosen Berdasarkan Upload Kinerja</h2>
+        <article class="dashboard-card table-card">
+            <div class="table-responsive">
+                <table class="dashboard-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nama Dosen</th>
+                            <th>NUPTK</th>
+                            <th>Total Upload</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($top_dosen_kinerja as $index => $dosen)
+                            <tr>
+                                <td>{{ $index + 1 }}</td>
+                                <td>{{ $dosen->nama }}</td>
+                                <td>{{ $dosen->nuptk }}</td>
+                                <td><span class="upload-badge">{{ $dosen->total_kinerja }}</span></td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="4" class="empty-state">Belum ada data kinerja dosen.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </article>
+    </section>
 </main>
 @endsection

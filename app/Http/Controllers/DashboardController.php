@@ -70,6 +70,23 @@ class DashboardController extends Controller
         arsort($kategori);
         arsort($pendingPerKategori);
 
+
+        $topDosenKinerja = Dosen::query()
+            ->withCount(['pengajarans', 'bukus', 'penelitians', 'pengabdians', 'penunjangs'])
+            ->get()
+            ->map(function ($dosen) {
+                $dosen->total_kinerja = $dosen->pengajarans_count
+                    + $dosen->bukus_count
+                    + $dosen->penelitians_count
+                    + $dosen->pengabdians_count
+                    + $dosen->penunjangs_count;
+
+                return $dosen;
+            })
+            ->sortByDesc('total_kinerja')
+            ->take(10)
+            ->values();
+
         return view('dashboard.dashboard-admin', [
             'kategori' => $kategori,
             'total_dosen' => Dosen::count(),
@@ -79,6 +96,7 @@ class DashboardController extends Controller
             'total_rejected' => $totalRejected,
             'kategori_terbanyak' => array_key_first($kategori),
             'pending_tertinggi' => array_key_first($pendingPerKategori),
+            'top_dosen_kinerja' => $topDosenKinerja,
         ]);
     }
 
