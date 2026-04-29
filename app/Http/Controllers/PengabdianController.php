@@ -32,34 +32,34 @@ class PengabdianController extends Controller
         return redirect()->route('kinerja-saya.index', ['tab' => 'pengabdian-'.$validated['tipe']])->with('success', 'Data pengabdian berhasil ditambahkan.');
     }
 
-    public function edit(Pengabdian $item): View
+    public function edit(Pengabdian $pengabdian): View
     {
-        $this->authorizePendingOwnership($item);
+        $this->authorizePendingOwnership($pengabdian);
 
-        return view('kinerja-saya.edit-pengabdian', ['item' => $item]);
+        return view('kinerja-saya.edit-pengabdian', ['item' => $pengabdian]);
     }
 
-    public function update(Request $request, Pengabdian $item): RedirectResponse
+    public function update(Request $request, Pengabdian $pengabdian): RedirectResponse
     {
-        $this->authorizePendingOwnership($item);
+        $this->authorizePendingOwnership($pengabdian);
         $validated = $request->validate(['tipe' => ['required','in:nasional,internasional'], 'judul' => ['required','string'], 'tahun' => ['required','digits:4'], 'sumber_biaya' => ['required','string'], 'jumlah_biaya' => ['required','numeric'], 'link' => ['nullable','string'], 'file' => ['nullable','file','mimes:pdf,doc,docx,jpg,jpeg,png','max:2048']]);
         if ($request->hasFile('file')) { $validated['file'] = $request->file('file')->store('kinerja/pengabdian', 'public'); }
         $validated['status'] = 'pending';
-        $item->update($validated);
+        $pengabdian->update($validated);
         return redirect()->route('kinerja-saya.index')->with('success', 'Data berhasil diperbarui.');
     }
 
-    public function destroy(Pengabdian $item): RedirectResponse
+    public function destroy(Pengabdian $pengabdian): RedirectResponse
     {
-        $this->authorizePendingOwnership($item);
-        $item->delete();
+        $this->authorizePendingOwnership($pengabdian);
+        $pengabdian->delete();
         return redirect()->route('kinerja-saya.index')->with('success', 'Data berhasil dihapus.');
     }
 
-    private function authorizePendingOwnership(Pengabdian $item): void
+    private function authorizePendingOwnership(Pengabdian $pengabdian): void
     {
         $dosenId = auth()->user()?->dosen?->id;
-        abort_unless($dosenId && $item->dosen_id === $dosenId && $item->status === 'pending', 403);
+        abort_unless($dosenId && $pengabdian->dosen_id === $dosenId && $pengabdian->status === 'pending', 403);
     }
 
 }

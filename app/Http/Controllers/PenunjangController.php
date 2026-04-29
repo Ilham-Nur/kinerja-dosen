@@ -26,34 +26,34 @@ class PenunjangController extends Controller
         return redirect()->route('kinerja-saya.index', ['tab' => 'penunjang'])->with('success', 'Data penunjang berhasil ditambahkan.');
     }
 
-    public function edit(Penunjang $item): View
+    public function edit(Penunjang $penunjang): View
     {
-        $this->authorizePendingOwnership($item);
+        $this->authorizePendingOwnership($penunjang);
 
-        return view('kinerja-saya.edit-penunjang', ['item' => $item]);
+        return view('kinerja-saya.edit-penunjang', ['item' => $penunjang]);
     }
 
-    public function update(Request $request, Penunjang $item): RedirectResponse
+    public function update(Request $request, Penunjang $penunjang): RedirectResponse
     {
-        $this->authorizePendingOwnership($item);
+        $this->authorizePendingOwnership($penunjang);
         $validated = $request->validate(['nama_kegiatan' => ['required','string'], 'file' => ['nullable','file','mimes:pdf,doc,docx,jpg,jpeg,png','max:2048']]);
         if ($request->hasFile('file')) { $validated['file'] = $request->file('file')->store('kinerja/penunjang', 'public'); }
         $validated['status'] = 'pending';
-        $item->update($validated);
+        $penunjang->update($validated);
         return redirect()->route('kinerja-saya.index')->with('success', 'Data berhasil diperbarui.');
     }
 
-    public function destroy(Penunjang $item): RedirectResponse
+    public function destroy(Penunjang $penunjang): RedirectResponse
     {
-        $this->authorizePendingOwnership($item);
-        $item->delete();
+        $this->authorizePendingOwnership($penunjang);
+        $penunjang->delete();
         return redirect()->route('kinerja-saya.index')->with('success', 'Data berhasil dihapus.');
     }
 
-    private function authorizePendingOwnership(Penunjang $item): void
+    private function authorizePendingOwnership(Penunjang $penunjang): void
     {
         $dosenId = auth()->user()?->dosen?->id;
-        abort_unless($dosenId && $item->dosen_id === $dosenId && $item->status === 'pending', 403);
+        abort_unless($dosenId && $penunjang->dosen_id === $dosenId && $penunjang->status === 'pending', 403);
     }
 
 }

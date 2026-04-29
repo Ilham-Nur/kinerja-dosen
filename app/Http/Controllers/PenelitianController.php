@@ -32,34 +32,34 @@ class PenelitianController extends Controller
         return redirect()->route('kinerja-saya.index', ['tab' => 'penelitian-'.$validated['tipe']])->with('success', 'Data penelitian berhasil ditambahkan.');
     }
 
-    public function edit(Penelitian $item): View
+    public function edit(Penelitian $penelitian): View
     {
-        $this->authorizePendingOwnership($item);
+        $this->authorizePendingOwnership($penelitian);
 
-        return view('kinerja-saya.edit-penelitian', ['item' => $item]);
+        return view('kinerja-saya.edit-penelitian', ['item' => $penelitian]);
     }
 
-    public function update(Request $request, Penelitian $item): RedirectResponse
+    public function update(Request $request, Penelitian $penelitian): RedirectResponse
     {
-        $this->authorizePendingOwnership($item);
+        $this->authorizePendingOwnership($penelitian);
         $validated = $request->validate(['tipe' => ['required','in:nasional,internasional'], 'judul' => ['required','string'], 'tahun' => ['required','digits:4'], 'sumber_biaya' => ['required','string'], 'jumlah_biaya' => ['required','numeric'], 'link' => ['nullable','string'], 'file' => ['nullable','file','mimes:pdf,doc,docx,jpg,jpeg,png','max:2048']]);
         if ($request->hasFile('file')) { $validated['file'] = $request->file('file')->store('kinerja/penelitian', 'public'); }
         $validated['status'] = 'pending';
-        $item->update($validated);
+        $penelitian->update($validated);
         return redirect()->route('kinerja-saya.index')->with('success', 'Data berhasil diperbarui.');
     }
 
-    public function destroy(Penelitian $item): RedirectResponse
+    public function destroy(Penelitian $penelitian): RedirectResponse
     {
-        $this->authorizePendingOwnership($item);
-        $item->delete();
+        $this->authorizePendingOwnership($penelitian);
+        $penelitian->delete();
         return redirect()->route('kinerja-saya.index')->with('success', 'Data berhasil dihapus.');
     }
 
-    private function authorizePendingOwnership(Penelitian $item): void
+    private function authorizePendingOwnership(Penelitian $penelitian): void
     {
         $dosenId = auth()->user()?->dosen?->id;
-        abort_unless($dosenId && $item->dosen_id === $dosenId && $item->status === 'pending', 403);
+        abort_unless($dosenId && $penelitian->dosen_id === $dosenId && $penelitian->status === 'pending', 403);
     }
 
 }

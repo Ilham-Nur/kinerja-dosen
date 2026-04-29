@@ -34,34 +34,34 @@ class BukuController extends Controller
         return redirect()->route('kinerja-saya.index', ['tab' => 'pengajaran-buku'])->with('success', 'Data buku berhasil ditambahkan.');
     }
 
-    public function edit(Buku $item): View
+    public function edit(Buku $buku): View
     {
-        $this->authorizePendingOwnership($item);
+        $this->authorizePendingOwnership($buku);
 
-        return view('kinerja-saya.edit-buku', ['item' => $item]);
+        return view('kinerja-saya.edit-buku', ['item' => $buku]);
     }
 
-    public function update(Request $request, Buku $item): RedirectResponse
+    public function update(Request $request, Buku $buku): RedirectResponse
     {
-        $this->authorizePendingOwnership($item);
+        $this->authorizePendingOwnership($buku);
         $validated = $request->validate(['judul' => ['required','string'], 'tahun' => ['required','digits:4'], 'sumber_biaya' => ['required','string'], 'jumlah_biaya' => ['required','numeric'], 'link' => ['nullable','string'], 'file' => ['nullable','file','mimes:pdf,doc,docx,jpg,jpeg,png','max:2048']]);
         if ($request->hasFile('file')) { $validated['file'] = $request->file('file')->store('kinerja/buku', 'public'); }
         $validated['status'] = 'pending';
-        $item->update($validated);
+        $buku->update($validated);
         return redirect()->route('kinerja-saya.index')->with('success', 'Data berhasil diperbarui.');
     }
 
-    public function destroy(Buku $item): RedirectResponse
+    public function destroy(Buku $buku): RedirectResponse
     {
-        $this->authorizePendingOwnership($item);
-        $item->delete();
+        $this->authorizePendingOwnership($buku);
+        $buku->delete();
         return redirect()->route('kinerja-saya.index')->with('success', 'Data berhasil dihapus.');
     }
 
-    private function authorizePendingOwnership(Buku $item): void
+    private function authorizePendingOwnership(Buku $buku): void
     {
         $dosenId = auth()->user()?->dosen?->id;
-        abort_unless($dosenId && $item->dosen_id === $dosenId && $item->status === 'pending', 403);
+        abort_unless($dosenId && $buku->dosen_id === $dosenId && $buku->status === 'pending', 403);
     }
 
 }
