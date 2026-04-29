@@ -23,6 +23,7 @@ class Buku extends Model
         'created_by',
         'approved_by',
         'approved_at',
+        'notes',
     ];
 
     protected $casts = [

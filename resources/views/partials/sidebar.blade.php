@@ -21,6 +21,15 @@
         </div>
 
 
+        @if (auth()->user()?->role === 'admin')
+        <div class="sidebar-item">
+            <a href="{{ route('approval.index') }}" class="sidebar-link {{ request()->routeIs('approval.*') ? 'active' : '' }}" data-page="approval">
+                <span class="sidebar-link-icon"><i class="fa-solid fa-check-to-slot"></i></span>
+                <span class="sidebar-link-label">Approval</span>
+            </a>
+        </div>
+        @endif
+
         <div class="sidebar-item">
             <a href="{{ route('dosens.index') }}" class="sidebar-link {{ request()->routeIs('dosens.*') ? 'active' : '' }}" data-page="dosens">
                 <span class="sidebar-link-icon"><i class="fa-solid fa-user-tie"></i></span>

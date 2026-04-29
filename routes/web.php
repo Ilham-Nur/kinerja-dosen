@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApprovalController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BukuController;
 use App\Http\Controllers\DashboardController;
@@ -47,6 +48,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/kinerja-saya/penunjang/{penunjang}/edit', [PenunjangController::class, 'edit'])->name('kinerja-saya.penunjang.edit');
     Route::put('/kinerja-saya/penunjang/{penunjang}', [PenunjangController::class, 'update'])->name('kinerja-saya.penunjang.update');
     Route::delete('/kinerja-saya/penunjang/{penunjang}', [PenunjangController::class, 'destroy'])->name('kinerja-saya.penunjang.destroy');
+
+
+    Route::get('/approval', [ApprovalController::class, 'index'])->name('approval.index');
+    Route::get('/approval/{type}/{id}', [ApprovalController::class, 'show'])->name('approval.show');
+    Route::post('/approval/{type}/{id}/approve', [ApprovalController::class, 'approve'])->name('approval.approve');
+    Route::post('/approval/{type}/{id}/reject', [ApprovalController::class, 'reject'])->name('approval.reject');
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
