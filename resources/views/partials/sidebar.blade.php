@@ -13,29 +13,37 @@
             </a>
         </div>
 
-        <div class="sidebar-item">
-            <a href="{{ route('kinerja-saya.index') }}" class="sidebar-link {{ request()->routeIs('kinerja-saya.*') ? 'active' : '' }}" data-page="kinerja-saya">
-                <span class="sidebar-link-icon"><i class="fa-solid fa-book"></i></span>
-                <span class="sidebar-link-label">Kinerja Saya</span>
-            </a>
-        </div>
-
-
-        @if (auth()->user()?->role === 'admin')
-        <div class="sidebar-item">
-            <a href="{{ route('approval.index') }}" class="sidebar-link {{ request()->routeIs('approval.*') ? 'active' : '' }}" data-page="approval">
-                <span class="sidebar-link-icon"><i class="fa-solid fa-check-to-slot"></i></span>
-                <span class="sidebar-link-label">Approval</span>
-            </a>
-        </div>
+        @if (auth()->user()?->role === 'dosen')
+            <div class="sidebar-item">
+                <a href="{{ route('kinerja-saya.index') }}" class="sidebar-link {{ request()->routeIs('kinerja-saya.*') ? 'active' : '' }}" data-page="kinerja-saya">
+                    <span class="sidebar-link-icon"><i class="fa-solid fa-book"></i></span>
+                    <span class="sidebar-link-label">Kinerja Saya</span>
+                </a>
+            </div>
         @endif
 
-        <div class="sidebar-item">
-            <a href="{{ route('dosens.index') }}" class="sidebar-link {{ request()->routeIs('dosens.*') ? 'active' : '' }}" data-page="dosens">
-                <span class="sidebar-link-icon"><i class="fa-solid fa-user-tie"></i></span>
-                <span class="sidebar-link-label">Data Dosen</span>
-            </a>
-        </div>
+        @if (auth()->user()?->role === 'admin')
+            <div class="sidebar-item">
+                <a href="{{ route('approval.index') }}" class="sidebar-link {{ request()->routeIs('approval.*') ? 'active' : '' }}" data-page="approval">
+                    <span class="sidebar-link-icon"><i class="fa-solid fa-check-to-slot"></i></span>
+                    <span class="sidebar-link-label">Approval</span>
+                </a>
+            </div>
+
+            <div class="sidebar-item">
+                <a href="{{ route('dosens.index') }}" class="sidebar-link {{ request()->routeIs('dosens.*') ? 'active' : '' }}" data-page="dosens">
+                    <span class="sidebar-link-icon"><i class="fa-solid fa-user-tie"></i></span>
+                    <span class="sidebar-link-label">Data Dosen</span>
+                </a>
+            </div>
+
+            <div class="sidebar-item">
+                <a href="{{ route('users.index') }}" class="sidebar-link {{ request()->routeIs('users.*') ? 'active' : '' }}" data-page="users">
+                    <span class="sidebar-link-icon"><i class="fa-solid fa-users"></i></span>
+                    <span class="sidebar-link-label">Data User</span>
+                </a>
+            </div>
+        @endif
 
         <div class="sidebar-section-label">Akun</div>
         <div class="sidebar-item">
