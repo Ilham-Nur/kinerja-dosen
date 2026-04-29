@@ -32,10 +32,10 @@
       <form method="POST" action="{{ route('login.attempt') }}" id="loginForm">
         @csrf
         <div class="form-group">
-          <label class="form-label" for="login">Username <span class="required">*</span></label>
+          <label class="form-label" for="login">Username / Email <span class="required">*</span></label>
           <div class="input-group">
             <i class="fa-solid fa-user input-group-icon"></i>
-            <input type="text" id="login" name="login" class="form-control" placeholder="Masukkan username" autocomplete="username" value="{{ old('login') }}" required />
+            <input type="text" id="login" name="login" class="form-control" placeholder="Masukkan username atau email" autocomplete="username" value="{{ old('login') }}" required />
           </div>
         </div>
 

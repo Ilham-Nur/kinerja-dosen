@@ -41,6 +41,22 @@ class LoginTest extends TestCase
         $this->assertAuthenticatedAs($user);
     }
 
+
+    public function test_user_can_login_with_email(): void
+    {
+        $user = User::factory()->create([
+            'email' => 'demo@example.com',
+            'password' => 'password',
+        ]);
+
+        $response = $this->post('/login', [
+            'login' => 'demo@example.com',
+            'password' => 'password',
+        ]);
+
+        $response->assertRedirect('/');
+        $this->assertAuthenticatedAs($user);
+    }
     public function test_sidebar_displays_authenticated_user_and_logout_button(): void
     {
         $user = User::factory()->create([

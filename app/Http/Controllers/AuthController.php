@@ -25,9 +25,14 @@ class AuthController extends Controller
             'password.required' => 'Kata sandi wajib diisi.',
         ]);
 
-        if (! Auth::attempt(['username' => $credentials['login'], 'password' => $credentials['password']], $request->boolean('remember'))) {
+        $loginInput = trim($credentials['login']);
+
+        $attempted = Auth::attempt(['username' => $loginInput, 'password' => $credentials['password']], $request->boolean('remember'))
+            || Auth::attempt(['email' => $loginInput, 'password' => $credentials['password']], $request->boolean('remember'));
+
+        if (! $attempted) {
             throw ValidationException::withMessages([
-                'login' => 'Username atau kata sandi tidak sesuai.',
+                'login' => 'Username/email atau kata sandi tidak sesuai.',
             ]);
         }
 
