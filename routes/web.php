@@ -18,7 +18,8 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
+    Route::redirect('/', '/dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
     Route::middleware('role:dosen')->group(function () {
         Route::get('/kinerja-saya', [PengajaranController::class, 'index'])->name('kinerja-saya.index');
