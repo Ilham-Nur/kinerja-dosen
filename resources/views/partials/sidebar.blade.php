@@ -12,14 +12,25 @@
                 <span class="sidebar-link-label">Dashboard</span>
             </a>
         </div>
+
+        <div class="sidebar-section-label">Akun</div>
+        <div class="sidebar-item">
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="sidebar-link" style="width:100%;border:none;background:transparent;text-align:left;cursor:pointer;">
+                    <span class="sidebar-link-icon"><i class="fa-solid fa-right-from-bracket"></i></span>
+                    <span class="sidebar-link-label">Logout</span>
+                </button>
+            </form>
+        </div>
     </nav>
 
     <div class="sidebar-footer">
         <div class="sidebar-user">
-            <div class="sidebar-user-avatar">BG</div>
+            <div class="sidebar-user-avatar">{{ strtoupper(substr(auth()->user()->name ?? 'U', 0, 1)) }}</div>
             <div class="sidebar-user-info">
-                <div class="sidebar-user-name">Boss Gatra</div>
-                <div class="sidebar-user-role">Administrator</div>
+                <div class="sidebar-user-name">{{ auth()->user()->name }}</div>
+                <div class="sidebar-user-role">{{ ucfirst(auth()->user()->role) }}</div>
             </div>
         </div>
     </div>

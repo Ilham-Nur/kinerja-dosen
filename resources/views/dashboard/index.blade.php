@@ -13,7 +13,7 @@
     <div class="page-header">
         <div class="page-header-left">
             <h1 class="page-header-title">Dashboard</h1>
-            <p class="page-header-subtitle">Selamat datang kembali, Boss Gatra. Berikut ringkasan hari ini.</p>
+            <p class="page-header-subtitle">Selamat datang kembali, {{ auth()->user()->name }}. Berikut ringkasan hari ini.</p>
         </div>
     </div>
 

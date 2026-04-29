@@ -33,6 +33,31 @@ class LoginTest extends TestCase
         $this->assertAuthenticatedAs($user);
     }
 
+    public function test_sidebar_displays_authenticated_user_and_logout_button(): void
+    {
+        $user = User::factory()->create([
+            'name' => 'Dosen Tester',
+            'role' => 'dosen',
+        ]);
+
+        $response = $this->actingAs($user)->get('/');
+
+        $response->assertStatus(200);
+        $response->assertSeeText('Dosen Tester');
+        $response->assertSeeText('Dosen');
+        $response->assertSeeText('Logout');
+    }
+
+    public function test_user_can_logout_from_sidebar_action(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->post('/logout');
+
+        $response->assertRedirect('/login');
+        $this->assertGuest();
+    }
+
     public function test_user_cannot_login_with_invalid_credentials(): void
     {
         User::factory()->create([
