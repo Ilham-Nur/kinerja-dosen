@@ -1,0 +1,1 @@
+<div class="card"><table class="table"><tr><th>Judul</th><th>Tahun</th><th>Status</th></tr>@foreach($items as $item)<tr><td>{{ $item->judul }}</td><td>{{ $item->tahun }}</td><td>{{ $item->status }}</td></tr>@endforeach</table></div>

@@ -1,0 +1,2 @@
+<form method="POST" action="{{ route('kinerja-saya.buku.store') }}" class="card">@csrf
+<h4>Form Buku</h4><input name="judul" placeholder="Judul" required><input name="isbn" placeholder="ISBN"><input name="tahun" placeholder="Tahun" required><input name="sumber_biaya" placeholder="Sumber biaya" required><input name="jumlah_biaya" type="number" step="0.01" placeholder="Jumlah biaya" required><input name="link" placeholder="Link"><input name="file" placeholder="File path/url"><button class="btn btn-primary">Simpan</button></form>

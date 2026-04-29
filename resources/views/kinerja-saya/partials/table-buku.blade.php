@@ -1,0 +1,1 @@
+<div class="card"><h4>Data Buku</h4><table class="table"><tr><th>Judul</th><th>ISBN</th><th>Tahun</th><th>Status</th></tr>@foreach($bukus as $item)<tr><td>{{ $item->judul }}</td><td>{{ $item->isbn }}</td><td>{{ $item->tahun }}</td><td>{{ $item->status }}</td></tr>@endforeach</table></div>

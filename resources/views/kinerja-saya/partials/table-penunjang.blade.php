@@ -1,0 +1,1 @@
+<div class="card"><table class="table"><tr><th>Kegiatan</th><th>Status</th></tr>@foreach($penunjangs as $item)<tr><td>{{ $item->nama_kegiatan }}</td><td>{{ $item->status }}</td></tr>@endforeach</table></div>

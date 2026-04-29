@@ -1,0 +1,1 @@
+<div class="card"><h4>Data Mata Kuliah</h4><table class="table"><tr><th>Mata Kuliah</th><th>SKS</th><th>Semester</th><th>Status</th></tr>@foreach($pengajarans as $item)<tr><td>{{ $item->mata_kuliah }}</td><td>{{ $item->sks }}</td><td>{{ $item->semester }}</td><td>{{ $item->status }}</td></tr>@endforeach</table></div>

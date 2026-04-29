@@ -1,0 +1,2 @@
+<form method="POST" action="{{ route('kinerja-saya.penelitian.store') }}" class="card">@csrf
+<input type="hidden" name="tipe" value="{{ $tipe }}"><h4>Form Penelitian {{ ucfirst($tipe) }}</h4><input name="judul" placeholder="Judul" required><input name="tahun" placeholder="Tahun" required><input name="sumber_biaya" placeholder="Sumber biaya" required><input name="jumlah_biaya" type="number" step="0.01" placeholder="Jumlah biaya" required><input name="link" placeholder="Link"><input name="file" placeholder="File"><button class="btn btn-primary">Simpan</button></form>

@@ -40,6 +40,17 @@ class User extends Authenticatable
         return $this->hasMany(Pengajaran::class, 'approved_by');
     }
 
+
+    public function bukuDibuat(): HasMany
+    {
+        return $this->hasMany(Buku::class, 'created_by');
+    }
+
+    public function bukuDisetujui(): HasMany
+    {
+        return $this->hasMany(Buku::class, 'approved_by');
+    }
+
     public function penelitianDibuat(): HasMany
     {
         return $this->hasMany(Penelitian::class, 'created_by');

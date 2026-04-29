@@ -29,6 +29,11 @@ class Dosen extends Model
         return $this->hasMany(Pengajaran::class);
     }
 
+    public function bukus(): HasMany
+    {
+        return $this->hasMany(Buku::class);
+    }
+
     public function penelitians(): HasMany
     {
         return $this->hasMany(Penelitian::class);
