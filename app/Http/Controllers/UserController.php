@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class UserController extends Controller
@@ -36,5 +37,39 @@ class UserController extends Controller
         User::query()->create($validated);
 
         return redirect()->route('users.index')->with('success', 'User berhasil ditambahkan.');
+    }
+
+    public function edit(User $user): View
+    {
+        return view('users.edit', compact('user'));
+    }
+
+    public function update(Request $request, User $user): RedirectResponse
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'username' => ['required', 'string', 'max:255', Rule::unique('users', 'username')->ignore($user->id)],
+            'password' => ['nullable', 'string', 'min:6'],
+            'role' => ['required', 'in:admin,dosen'],
+        ]);
+
+        if (empty($validated['password'])) {
+            unset($validated['password']);
+        }
+
+        $user->update($validated);
+
+        return redirect()->route('users.index')->with('success', 'User berhasil diperbarui.');
+    }
+
+    public function destroy(User $user): RedirectResponse
+    {
+        if (auth()->id() === $user->id) {
+            return redirect()->route('users.index')->with('error', 'Akun yang sedang login tidak bisa dihapus.');
+        }
+
+        $user->delete();
+
+        return redirect()->route('users.index')->with('success', 'User berhasil dihapus.');
     }
 }

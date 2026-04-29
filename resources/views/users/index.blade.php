@@ -18,13 +18,14 @@
         <div class="ks-empty">Belum ada data user.</div>
     @else
         <div style="overflow-x:auto;">
-            <table class="table table-striped" style="min-width:720px;">
+            <table class="table table-striped" style="min-width:820px;">
                 <thead>
                     <tr>
                         <th>Nama</th>
                         <th>Username</th>
                         <th>Role</th>
                         <th>Tanggal Dibuat</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -34,6 +35,16 @@
                             <td>{{ $user->username }}</td>
                             <td><span class="badge-role">{{ ucfirst($user->role) }}</span></td>
                             <td>{{ $user->created_at?->format('d M Y H:i') ?? '-' }}</td>
+                            <td>
+                                <div class="table-actions">
+                                    <a href="{{ route('users.edit', $user) }}" class="btn btn-secondary">Edit</a>
+                                    <form method="POST" action="{{ route('users.destroy', $user) }}" onsubmit="return confirm('Yakin ingin menghapus user ini?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">Hapus</button>
+                                    </form>
+                                </div>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
