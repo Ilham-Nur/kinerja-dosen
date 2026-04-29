@@ -67,7 +67,7 @@
                                 <td>{{ $row['lecturer'] }}</td>
                                 <td>{{ $row['category'] }}</td>
                                 <td>{{ $row['title'] }}</td>
-                                <td><span class="badge status-{{ $row['status'] }}">{{ ucfirst($row['status']) }}</span></td>
+                                <td><span class="badge {{ $row['status'] === 'approved' ? 'badge-success' : ($row['status'] === 'rejected' ? 'badge-danger' : 'badge-warning') }}">{{ ucfirst($row['status']) }}</span></td>
                                 <td>
                                     <a class="btn btn-secondary btn-sm" href="{{ route('approval.show', [$row['type'], $row['id']]) }}">Review</a>
                                 </td>
