@@ -406,6 +406,7 @@ document.addEventListener('DOMContentLoaded', () => {
   FileUpload.init();
   TableUtils.init();
   FormUtils.init();
+  ApprovalFilter.init();
   initDeleteButtons();
 
   // Hide page loader after everything is ready
@@ -418,3 +419,20 @@ document.addEventListener('DOMContentLoaded', () => {
 window.Toast          = Toast;
 window.ConfirmDialog  = ConfirmDialog;
 window.SidebarManager = SidebarManager;
+
+
+/* ============================================================
+   8. APPROVAL FILTER HELPER
+   ============================================================ */
+const ApprovalFilter = (() => {
+  function init() {
+    const form = document.querySelector('[data-approval-filter]');
+    if (!form) return;
+
+    form.querySelectorAll('select').forEach((el) => {
+      el.addEventListener('change', () => form.submit());
+    });
+  }
+
+  return { init };
+})();

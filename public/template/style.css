@@ -1752,3 +1752,48 @@ select.form-control {
 .show-password-toggle:hover {
   color: var(--text-secondary);
 }
+
+/* ── Approval Page ───────────────────────────────────────── */
+.approval-page {
+  display: grid;
+  gap: 20px;
+}
+
+.approval-filter-card {
+  margin-top: -8px;
+}
+
+.approval-filter-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(220px, 1fr)) auto;
+  gap: 16px;
+  align-items: end;
+}
+
+.approval-filter-form .form-group {
+  margin-bottom: 0;
+}
+
+.approval-filter-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.approval-action-layout {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.approval-reject-form {
+  width: min(100%, 520px);
+}
+
+@media (max-width: 900px) {
+  .approval-filter-form {
+    grid-template-columns: 1fr;
+  }
+}
