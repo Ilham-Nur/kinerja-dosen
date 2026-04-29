@@ -6,7 +6,7 @@
 <main class="page-content">
     <h1 class="kf-title">Tambah User</h1>
 
-    <form action="{{ route('users.store') }}" method="POST" class="kf-form">
+    <form data-confirm="true" data-confirm-title="Simpan User Baru?" data-confirm-body="Data user baru akan ditambahkan." action="{{ route('users.store') }}" method="POST" class="kf-form">
         @csrf
 
         <div class="field-group">
@@ -45,4 +45,5 @@
     .field-group input,.field-group select{width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:10px 12px;font-size:14px;background:#fff}
     .kf-submit{justify-content:center}
 </style>
+@include('kinerja-saya.partials.confirm-script')
 @endsection

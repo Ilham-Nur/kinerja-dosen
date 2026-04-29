@@ -38,7 +38,7 @@
                             <td>
                                 <div class="table-actions">
                                     <a href="{{ route('users.edit', $user) }}" class="btn btn-secondary">Edit</a>
-                                    <form method="POST" action="{{ route('users.destroy', $user) }}" onsubmit="return confirm('Yakin ingin menghapus user ini?')">
+                                    <form data-confirm="true" data-confirm-type="danger" data-confirm-title="Hapus User?" data-confirm-body="Data user akan dihapus permanen." method="POST" action="{{ route('users.destroy', $user) }}">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger">Hapus</button>
@@ -57,4 +57,5 @@
     .ks-empty{background:#fff;border:1px dashed #d1d5db;border-radius:14px;padding:20px;color:#64748b}
     .badge-role{display:inline-block;background:#e2e8f0;color:#334155;border-radius:999px;padding:4px 10px;font-weight:700;font-size:12px}
 </style>
+@include('kinerja-saya.partials.confirm-script')
 @endsection
