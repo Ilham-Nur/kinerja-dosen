@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — AdminPanel</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+  <!-- ── Page Loader ─────────────────────────────────────── -->
+  <div id="pageLoader" class="page-loader">
+    <div class="spinner spinner-lg"></div>
+    <div class="page-loader-text">Memuat halaman…</div>
+  </div>
+
+  <!-- ── Toast Container ─────────────────────────────────── -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- ── Confirm Dialog ──────────────────────────────────── -->
+  <div id="confirmOverlay" class="modal-overlay">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modal-header">
+        <div id="confirmIcon" class="modal-icon warning">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <div class="modal-header-text">
+          <div id="confirmTitle" class="modal-title">Konfirmasi Tindakan</div>
+          <div class="modal-subtitle">Periksa kembali sebelum melanjutkan</div>
+        </div>
+      </div>
+      <div id="confirmBody" class="modal-body">
+        Tindakan ini tidak dapat dibatalkan.
+      </div>
+      <div class="modal-footer">
+        <button id="confirmCancel" class="btn btn-secondary">Batal</button>
+        <button id="confirmOk" class="btn btn-danger">Konfirmasi</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Sidebar Overlay (mobile) ────────────────────────── -->
+  <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       LAYOUT
+  ════════════════════════════════════════════════════════ -->
+  <div class="layout">
+
+    <!-- ══ SIDEBAR ══════════════════════════════════════════ -->
+    <!-- In Laravel Blade: @include('layouts.sidebar') -->
+    <aside id="sidebar" class="sidebar">
+
+      <!-- Brand -->
+      <div class="sidebar-brand">
+        <div class="sidebar-brand-icon">
+          <i class="fa-solid fa-layer-group"></i>
+        </div>
+        <span class="sidebar-brand-name">AdminPanel</span>
+      </div>
+
+      <!-- Navigation -->
+      <nav class="sidebar-nav" aria-label="Sidebar navigation">
+
+        <!-- Main -->
+        <div class="sidebar-section-label">Utama</div>
+
+        <div class="sidebar-item">
+          <a href="index.html" class="sidebar-link active" data-page="index">
+            <span class="sidebar-link-icon"><i class="fa-solid fa-house"></i></span>
+            <span class="sidebar-link-label">Dashboard</span>
+          </a>
+        </div>
+
+        <div class="sidebar-item">
+          <a href="#" class="sidebar-link" data-page="analytics">
+            <span class="sidebar-link-icon"><i class="fa-solid fa-chart-line"></i></span>
+            <span class="sidebar-link-label">Analitik</span>
+          </a>
+        </div>
+
+        <div class="sidebar-item">
+          <a href="#" class="sidebar-link" data-page="reports">
+            <span class="sidebar-link-icon"><i class="fa-solid fa-file-chart-column"></i></span>
+            <span class="sidebar-link-label">Laporan</span>
+          </a>
+        </div>
+
+        <!-- Management -->
+        <div class="sidebar-section-label">Manajemen</div>
+
+        <div class="sidebar-item">
+          <a href="#" class="sidebar-link" data-page="users">
+            <span class="sidebar-link-icon"><i class="fa-solid fa-users"></i></span>
+            <span class="sidebar-link-label">Pengguna</span>
+            <span class="sidebar-link-badge">3</span>
+          </a>
+        </div>
+
+        <div class="sidebar-item">
+          <a href="#" class="sidebar-link" data-page="products">
+            <span class="sidebar-link-icon"><i class="fa-solid fa-box-archive"></i></span>
+            <span class="sidebar-link-label">Produk</span>
+          </a>
+        </div>
+
+        <div class="sidebar-item">
+          <a href="#" class="sidebar-link" data-page="orders">
+            <span class="sidebar-link-icon"><i class="fa-solid fa-bag-shopping"></i></span>
+            <span class="sidebar-link-label">Pesanan</span>
+          </a>
+        </div>
+
+        <div class="sidebar-item">
+          <a href="#" class="sidebar-link" data-page="invoices">
+            <span class="sidebar-link-icon"><i class="fa-solid fa-file-invoice"></i></span>
+            <span class="sidebar-link-label">Invoice</span>
+          </a>
+        </div>
+
+        <!-- System -->
+        <div class="sidebar-section-label">Sistem</div>
+
+        <div class="sidebar-item">
+          <a href="#" class="sidebar-link" data-page="settings">
+            <span class="sidebar-link-icon"><i class="fa-solid fa-gear"></i></span>
+            <span class="sidebar-link-label">Pengaturan</span>
+          </a>
+        </div>
+
+        <div class="sidebar-item">
+          <a href="#" class="sidebar-link" data-page="logs">
+            <span class="sidebar-link-icon"><i class="fa-solid fa-terminal"></i></span>
+            <span class="sidebar-link-label">Log Sistem</span>
+          </a>
+        </div>
+
+        <div class="sidebar-item">
+          <a href="#" class="sidebar-link" data-page="help">
+            <span class="sidebar-link-icon"><i class="fa-solid fa-circle-question"></i></span>
+            <span class="sidebar-link-label">Bantuan</span>
+          </a>
+        </div>
+
+      </nav>
+
+      <!-- Sidebar Footer / User -->
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <div class="sidebar-user-avatar">BG</div>
+          <div class="sidebar-user-info">
+            <div class="sidebar-user-name">Boss Gatra</div>
+            <div class="sidebar-user-role">Administrator</div>
+          </div>
+        </div>
+      </div>
+
+    </aside>
+    <!-- /.sidebar -->
+
+    <!-- ══ MAIN CONTENT ═════════════════════════════════════ -->
+    <div id="mainContent" class="main-content">
+
+      <!-- ── NAVBAR ──────────────────────────────────────── -->
+      <!-- In Laravel Blade: @include('layouts.navbar') -->
+      <header class="navbar">
+
+        <!-- Hamburger / Collapse Toggle -->
+        <button id="sidebarToggle" class="navbar-toggle" aria-label="Toggle sidebar">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <!-- Page Title -->
+        <span class="navbar-title">Dashboard</span>
+
+        <div class="navbar-spacer"></div>
+
+        <!-- Navbar Actions -->
+        <div class="navbar-actions">
+
+          <!-- Search -->
+          <button class="navbar-btn" aria-label="Search" title="Cari">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+
+          <!-- Notifications -->
+          <button class="navbar-btn" aria-label="Notifikasi" title="Notifikasi">
+            <i class="fa-solid fa-bell"></i>
+            <span class="navbar-badge"></span>
+          </button>
+
+          <!-- User Dropdown -->
+          <div class="navbar-dropdown">
+            <div class="navbar-dropdown-trigger" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false">
+              <div class="navbar-dropdown-avatar">BG</div>
+              <span class="navbar-dropdown-name">Boss Gatra</span>
+              <i class="fa-solid fa-chevron-down navbar-dropdown-chevron"></i>
+            </div>
+            <div class="navbar-dropdown-menu" role="menu">
+              <div class="dropdown-user-info">
+                <div class="dropdown-user-info-name">Boss Gatra</div>
+                <div class="dropdown-user-info-email">boss.gatra@company.com</div>
+              </div>
+              <div class="dropdown-item" role="menuitem" onclick="Toast.info('Profile', 'Fitur segera hadir.')">
+                <i class="fa-solid fa-circle-user" style="width:16px;text-align:center;"></i>
+                Profil Saya
+              </div>
+              <div class="dropdown-item" role="menuitem">
+                <i class="fa-solid fa-gear" style="width:16px;text-align:center;"></i>
+                Pengaturan
+              </div>
+              <div class="dropdown-item" role="menuitem">
+                <i class="fa-solid fa-keyboard" style="width:16px;text-align:center;"></i>
+                Pintasan Keyboard
+              </div>
+              <div class="dropdown-divider"></div>
+              <div class="dropdown-item danger" role="menuitem" onclick="handleLogout()">
+                <i class="fa-solid fa-arrow-right-from-bracket" style="width:16px;text-align:center;"></i>
+                Keluar
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </header>
+      <!-- /.navbar -->
+
+      <!-- ── PAGE CONTENT ────────────────────────────────── -->
+      <main class="page-content">
+
+        <!-- Breadcrumb -->
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <div class="breadcrumb-item"><a href="#">Home</a></div>
+          <div class="breadcrumb-sep"><i class="fa-solid fa-chevron-right"></i></div>
+          <div class="breadcrumb-item active">Dashboard</div>
+        </nav>
+
+        <!-- Page Header -->
+        <div class="page-header">
+          <div class="page-header-left">
+            <h1 class="page-header-title">Dashboard</h1>
+            <p class="page-header-subtitle">Selamat datang kembali, Boss Gatra. Berikut ringkasan hari ini.</p>
+          </div>
+          <div class="page-header-actions">
+            <button class="btn btn-secondary" onclick="Toast.info('Export', 'Mengekspor data…')">
+              <i class="fa-solid fa-download"></i>
+              Export
+            </button>
+            <button class="btn btn-primary" onclick="Toast.success('Sukses', 'Data baru berhasil ditambahkan.')">
+              <i class="fa-solid fa-plus"></i>
+              Tambah Baru
+            </button>
+          </div>
+        </div>
+
+        <!-- ── STAT CARDS ──────────────────────────────── -->
+        <div class="stats-grid">
+
+          <div class="stat-card">
+            <div class="stat-card-icon blue">
+              <i class="fa-solid fa-users"></i>
+            </div>
+            <div class="stat-card-body">
+              <div class="stat-card-label">Total Pengguna</div>
+              <div class="stat-card-value">12,483</div>
+              <div class="stat-card-change up">
+                <i class="fa-solid fa-arrow-trend-up"></i>
+                +8.2% <span>vs bulan lalu</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-icon green">
+              <i class="fa-solid fa-circle-dollar-to-slot"></i>
+            </div>
+            <div class="stat-card-body">
+              <div class="stat-card-label">Pendapatan</div>
+              <div class="stat-card-value">Rp 284 Jt</div>
+              <div class="stat-card-change up">
+                <i class="fa-solid fa-arrow-trend-up"></i>
+                +12.5% <span>vs bulan lalu</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-icon yellow">
+              <i class="fa-solid fa-bag-shopping"></i>
+            </div>
+            <div class="stat-card-body">
+              <div class="stat-card-label">Total Pesanan</div>
+              <div class="stat-card-value">3,291</div>
+              <div class="stat-card-change down">
+                <i class="fa-solid fa-arrow-trend-down"></i>
+                -3.1% <span>vs bulan lalu</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card-icon cyan">
+              <i class="fa-solid fa-chart-simple"></i>
+            </div>
+            <div class="stat-card-body">
+              <div class="stat-card-label">Konversi</div>
+              <div class="stat-card-value">4.73%</div>
+              <div class="stat-card-change up">
+                <i class="fa-solid fa-arrow-trend-up"></i>
+                +0.4% <span>vs bulan lalu</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!-- /.stats-grid -->
+
+        <!-- ── TWO COLUMN SECTION ──────────────────────── -->
+        <div class="grid-2 mb-24" style="margin-bottom: 24px;">
+
+          <!-- Recent Orders Table -->
+          <div class="card" style="grid-column: span 2;">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Pesanan Terbaru</div>
+                <div class="card-subtitle">Daftar 10 pesanan terbaru masuk</div>
+              </div>
+              <div class="d-flex align-center gap-8">
+                <!-- Search -->
+                <div class="search-box">
+                  <i class="fa-solid fa-magnifying-glass search-box-icon"></i>
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Cari pesanan…"
+                    data-table-search="ordersTable"
+                    style="width: 220px; padding-left:34px;"
+                  />
+                </div>
+                <button class="btn btn-secondary btn-sm">
+                  <i class="fa-solid fa-filter"></i>
+                  Filter
+                </button>
+              </div>
+            </div>
+
+            <div class="table-wrapper" style="border:none; border-radius:0; box-shadow:none;">
+              <table class="table table-striped" id="ordersTable">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Pelanggan</th>
+                    <th>Produk</th>
+                    <th>Tanggal</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th style="text-align:right;">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="font-mono" style="font-size:12px; color:var(--text-muted);">#ORD-001</span></td>
+                    <td>
+                      <div class="d-flex align-center gap-8">
+                        <div class="avatar avatar-sm" style="background:#6366F1;">AK</div>
+                        <span>Ahmad Kurniawan</span>
+                      </div>
+                    </td>
+                    <td>Shaft Propeller 316L</td>
+                    <td><span class="text-muted">29 Apr 2026</span></td>
+                    <td><strong>Rp 4.200.000</strong></td>
+                    <td><span class="badge badge-success"><span class="badge-dot"></span>Selesai</span></td>
+                    <td>
+                      <div class="table-actions" style="justify-content:flex-end;">
+                        <button class="btn btn-secondary btn-sm btn-icon" title="Lihat Detail">
+                          <i class="fa-solid fa-eye"></i>
+                        </button>
+                        <button class="btn btn-secondary btn-sm btn-icon" title="Edit">
+                          <i class="fa-solid fa-pencil"></i>
+                        </button>
+                        <button class="btn btn-secondary btn-sm btn-icon" title="Hapus"
+                          data-confirm-delete data-item="pesanan #ORD-001">
+                          <i class="fa-solid fa-trash-can" style="color:var(--danger);"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><span class="font-mono" style="font-size:12px; color:var(--text-muted);">#ORD-002</span></td>
+                    <td>
+                      <div class="d-flex align-center gap-8">
+                        <div class="avatar avatar-sm" style="background:#F59E0B;">BS</div>
+                        <span>Budi Santoso</span>
+                      </div>
+                    </td>
+                    <td>Coupling Flange DN100</td>
+                    <td><span class="text-muted">28 Apr 2026</span></td>
+                    <td><strong>Rp 1.850.000</strong></td>
+                    <td><span class="badge badge-warning"><span class="badge-dot"></span>Proses</span></td>
+                    <td>
+                      <div class="table-actions" style="justify-content:flex-end;">
+                        <button class="btn btn-secondary btn-sm btn-icon" title="Lihat Detail">
+                          <i class="fa-solid fa-eye"></i>
+                        </button>
+                        <button class="btn btn-secondary btn-sm btn-icon" title="Edit">
+                          <i class="fa-solid fa-pencil"></i>
+                        </button>
+                        <button class="btn btn-secondary btn-sm btn-icon" title="Hapus"
+                          data-confirm-delete data-item="pesanan #ORD-002">
+                          <i class="fa-solid fa-trash-can" style="color:var(--danger);"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><span class="font-mono" style="font-size:12px; color:var(--text-muted);">#ORD-003</span></td>
+                    <td>
+                      <div class="d-flex align-center gap-8">
+                        <div class="avatar avatar-sm" style="background:#10B981;">DW</div>
+                        <span>Dewi Wahyuni</span>
+                      </div>
+                    </td>
+                    <td>Valve Gate 2" SS304</td>
+                    <td><span class="text-muted">27 Apr 2026</span></td>
+                    <td><strong>Rp 920.000</strong></td>
+                    <td><span class="badge badge-primary"><span class="badge-dot"></span>Dikirim</span></td>
+                    <td>
+                      <div class="table-actions" style="justify-content:flex-end;">
+                        <button class="btn btn-secondary btn-sm btn-icon" title="Lihat Detail">
+                          <i class="fa-solid fa-eye"></i>
+                        </button>
+                        <button class="btn btn-secondary btn-sm btn-icon" title="Edit">
+                          <i class="fa-solid fa-pencil"></i>
+                        </button>
+                        <button class="btn btn-secondary btn-sm btn-icon" title="Hapus"
+                          data-confirm-delete data-item="pesanan #ORD-003">
+                          <i class="fa-solid fa-trash-can" style="color:var(--danger);"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><span class="font-mono" style="font-size:12px; color:var(--text-muted);">#ORD-004</span></td>
+                    <td>
+                      <div class="d-flex align-center gap-8">
+                        <div class="avatar avatar-sm" style="background:#EF4444;">RP</div>
+                        <span>Rizal Pratama</span>
+                      </div>
+                    </td>
+                    <td>KI SUSF 316L Round Bar</td>
+                    <td><span class="text-muted">26 Apr 2026</span></td>
+                    <td><strong>Rp 7.500.000</strong></td>
+                    <td><span class="badge badge-danger"><span class="badge-dot"></span>Dibatalkan</span></td>
+                    <td>
+                      <div class="table-actions" style="justify-content:flex-end;">
+                        <button class="btn btn-secondary btn-sm btn-icon" title="Lihat Detail">
+                          <i class="fa-solid fa-eye"></i>
+                        </button>
+                        <button class="btn btn-secondary btn-sm btn-icon" title="Edit">
+                          <i class="fa-solid fa-pencil"></i>
+                        </button>
+                        <button class="btn btn-secondary btn-sm btn-icon" title="Hapus"
+                          data-confirm-delete data-item="pesanan #ORD-004">
+                          <i class="fa-solid fa-trash-can" style="color:var(--danger);"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><span class="font-mono" style="font-size:12px; color:var(--text-muted);">#ORD-005</span></td>
+                    <td>
+                      <div class="d-flex align-center gap-8">
+                        <div class="avatar avatar-sm" style="background:#8B5CF6;">SN</div>
+                        <span>Sari Ningrum</span>
+                      </div>
+                    </td>
+                    <td>Bearing SKF 6205</td>
+                    <td><span class="text-muted">25 Apr 2026</span></td>
+                    <td><strong>Rp 340.000</strong></td>
+                    <td><span class="badge badge-success"><span class="badge-dot"></span>Selesai</span></td>
+                    <td>
+                      <div class="table-actions" style="justify-content:flex-end;">
+                        <button class="btn btn-secondary btn-sm btn-icon" title="Lihat Detail">
+                          <i class="fa-solid fa-eye"></i>
+                        </button>
+                        <button class="btn btn-secondary btn-sm btn-icon" title="Edit">
+                          <i class="fa-solid fa-pencil"></i>
+                        </button>
+                        <button class="btn btn-secondary btn-sm btn-icon" title="Hapus"
+                          data-confirm-delete data-item="pesanan #ORD-005">
+                          <i class="fa-solid fa-trash-can" style="color:var(--danger);"></i>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Table Footer / Pagination -->
+            <div class="card-footer d-flex align-center justify-between">
+              <span class="text-muted">Menampilkan 1–5 dari 3,291 pesanan</span>
+              <div class="pagination">
+                <button class="page-btn" title="Halaman sebelumnya">
+                  <i class="fa-solid fa-chevron-left" style="font-size:11px;"></i>
+                </button>
+                <button class="page-btn active">1</button>
+                <button class="page-btn">2</button>
+                <button class="page-btn">3</button>
+                <span style="padding: 0 4px; color:var(--text-muted); font-size:13px;">…</span>
+                <button class="page-btn">48</button>
+                <button class="page-btn" title="Halaman berikutnya">
+                  <i class="fa-solid fa-chevron-right" style="font-size:11px;"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!-- /.two-column -->
+
+        <!-- ── FORM EXAMPLE ────────────────────────────── -->
+        <div class="grid-2">
+
+          <!-- Add Product Form -->
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Tambah Produk</div>
+                <div class="card-subtitle">Isi detail produk di bawah ini</div>
+              </div>
+            </div>
+            <div class="card-body">
+
+              <div class="form-group">
+                <label class="form-label" for="productName">Nama Produk <span class="required">*</span></label>
+                <input type="text" id="productName" class="form-control" placeholder="Contoh: Shaft Propeller" />
+              </div>
+
+              <div class="grid-2">
+                <div class="form-group">
+                  <label class="form-label" for="productCat">Kategori</label>
+                  <select id="productCat" class="form-control">
+                    <option value="">-- Pilih Kategori --</option>
+                    <option>Material Baja</option>
+                    <option>Komponen Pompa</option>
+                    <option>Valve & Fitting</option>
+                    <option>Bearing</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="productGrade">Grade Material</label>
+                  <input type="text" id="productGrade" class="form-control" value="KI SUSF 316L" placeholder="Contoh: 316L" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="productPrice">Harga (Rp) <span class="required">*</span></label>
+                <div class="input-group">
+                  <i class="fa-solid fa-dollar-sign input-group-icon" style="font-size:12px;"></i>
+                  <input type="number" id="productPrice" class="form-control" placeholder="0" min="0" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="productDesc">Deskripsi</label>
+                <textarea id="productDesc" class="form-control" placeholder="Deskripsi singkat produk…"></textarea>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Foto Produk</label>
+                <div class="file-upload-area" data-input="productImage">
+                  <div class="file-upload-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+                  <div class="file-upload-text">
+                    <strong>Klik untuk unggah</strong> atau drag &amp; drop
+                  </div>
+                  <div class="file-upload-hint">PNG, JPG, WEBP — maks. 5 MB</div>
+                </div>
+                <input type="file" id="productImage" accept="image/*" style="display:none;" />
+              </div>
+
+            </div>
+            <div class="card-footer d-flex justify-between align-center">
+              <button class="btn btn-ghost" onclick="Toast.warning('Reset', 'Form dikosongkan.')">
+                Reset
+              </button>
+              <button class="btn btn-primary" onclick="handleSaveProduct()">
+                <i class="fa-solid fa-floppy-disk"></i>
+                Simpan Produk
+              </button>
+            </div>
+          </div>
+
+          <!-- Quick Notifications Demo + Info Card -->
+          <div style="display:flex; flex-direction:column; gap:20px;">
+
+            <!-- Toast Demo Card -->
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">Demo Notifikasi</div>
+                  <div class="card-subtitle">Klik untuk melihat contoh notifikasi</div>
+                </div>
+              </div>
+              <div class="card-body" style="display:flex; flex-direction:column; gap:10px;">
+                <button class="btn btn-success w-full" onclick="Toast.success('Berhasil!', 'Data telah disimpan ke database.')">
+                  <i class="fa-solid fa-circle-check"></i> Toast Sukses
+                </button>
+                <button class="btn btn-danger w-full" onclick="Toast.error('Gagal!', 'Terjadi kesalahan pada server. Coba lagi.')">
+                  <i class="fa-solid fa-circle-xmark"></i> Toast Error
+                </button>
+                <button class="btn btn-warning w-full" onclick="Toast.warning('Perhatian!', 'Stok produk hampir habis.')">
+                  <i class="fa-solid fa-triangle-exclamation"></i> Toast Warning
+                </button>
+                <button class="btn btn-outline-primary w-full" onclick="Toast.info('Info', 'Sistem akan maintenance pada 02:00 WIB.')">
+                  <i class="fa-solid fa-circle-info"></i> Toast Info
+                </button>
+              </div>
+            </div>
+
+            <!-- Confirm Dialog Demo -->
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <div class="card-title">Demo Confirm Dialog</div>
+                  <div class="card-subtitle">Custom modal konfirmasi</div>
+                </div>
+              </div>
+              <div class="card-body" style="display:flex; flex-direction:column; gap:10px;">
+                <button class="btn btn-danger w-full" onclick="demoDelete()">
+                  <i class="fa-solid fa-trash-can"></i> Konfirmasi Hapus
+                </button>
+                <button class="btn btn-warning w-full" onclick="demoWarning()">
+                  <i class="fa-solid fa-triangle-exclamation"></i> Konfirmasi Warning
+                </button>
+                <button class="btn btn-secondary w-full" onclick="SidebarManager.toggleCollapse()">
+                  <i class="fa-solid fa-sidebar-flip"></i> Toggle Sidebar (Desktop)
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+        <!-- /.grid-2 -->
+
+      </main>
+      <!-- /.page-content -->
+
+      <!-- ── FOOTER ───────────────────────────────────── -->
+      <footer class="footer">
+        <span>© 2026 <strong>AdminPanel</strong> — Semua hak dilindungi.</span>
+        <span>
+          Dibuat dengan <i class="fa-solid fa-heart" style="color:var(--danger);font-size:11px;"></i> untuk
+          <a href="#">Boss Gatra</a>
+        </span>
+      </footer>
+
+    </div><!-- /.main-content -->
+  </div><!-- /.layout -->
+
+  <script src="app.js"></script>
+  <script>
+    // ── Page-specific scripts ─────────────────────────────
+    // In Laravel: these go in @push('scripts')
+
+    async function handleLogout() {
+      const ok = await ConfirmDialog.show({
+        title:       'Keluar dari sistem?',
+        body:        'Sesi Anda akan diakhiri. Anda perlu login kembali untuk melanjutkan.',
+        type:        'warning',
+        confirmText: 'Ya, Keluar',
+        cancelText:  'Batal',
+        confirmClass:'btn-danger',
+      });
+      if (ok) {
+        Toast.info('Keluar…', 'Mengarahkan ke halaman login.');
+        setTimeout(() => { window.location.href = 'login.html'; }, 1200);
+      }
+    }
+
+    async function handleSaveProduct() {
+      const name = document.getElementById('productName').value.trim();
+      if (!name) {
+        Toast.error('Validasi Gagal', 'Nama produk wajib diisi.');
+        document.getElementById('productName').classList.add('is-invalid');
+        return;
+      }
+      document.getElementById('productName').classList.remove('is-invalid');
+      Toast.success('Produk Disimpan', `Produk "${name}" berhasil ditambahkan.`);
+    }
+
+    async function demoDelete() {
+      const ok = await ConfirmDialog.show({
+        title:       'Hapus item ini?',
+        body:        'Data yang dihapus tidak bisa dikembalikan. Apakah Anda yakin?',
+        type:        'danger',
+        confirmText: 'Ya, Hapus',
+        confirmClass:'btn-danger',
+      });
+      if (ok) Toast.success('Dihapus', 'Item berhasil dihapus dari sistem.');
+      else    Toast.info('Dibatalkan', 'Tidak ada perubahan yang dilakukan.');
+    }
+
+    async function demoWarning() {
+      const ok = await ConfirmDialog.show({
+        title:       'Lanjutkan tindakan ini?',
+        body:        'Tindakan ini akan mempengaruhi data aktif. Pastikan sudah membuat backup.',
+        type:        'warning',
+        confirmText: 'Lanjutkan',
+        confirmClass:'btn-warning',
+      });
+      if (ok) Toast.success('Dilanjutkan', 'Tindakan berhasil dieksekusi.');
+    }
+
+    // Input validation — remove is-invalid on input
+    document.getElementById('productName').addEventListener('input', function () {
+      this.classList.remove('is-invalid');
+    });
+  </script>
+
+</body>
+</html>
