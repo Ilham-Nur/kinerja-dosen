@@ -18,14 +18,16 @@ class PenelitianController extends Controller
             'sumber_biaya' => ['required', 'string'],
             'jumlah_biaya' => ['required', 'numeric'],
             'link' => ['nullable', 'string'],
-            'file' => ['nullable', 'string'],
+            'file' => ['nullable', 'file', 'mimes:pdf,doc,docx,jpg,jpeg,png', 'max:2048'],
         ]);
 
         $user = auth()->user();
         $dosen = $user?->dosen;
         if (! $dosen) return back()->withInput()->with('error', 'Data dosen tidak ditemukan untuk akun ini.');
 
-        Penelitian::create([...$validated, 'dosen_id' => $dosen->id, 'status' => 'pending', 'created_by' => $user->id]);
+        $filePath = $request->file('file')?->store('kinerja/penelitian', 'public');
+
+        Penelitian::create([...$validated, 'file' => $filePath, 'dosen_id' => $dosen->id, 'status' => 'pending', 'created_by' => $user->id]);
         return redirect()->route('kinerja-saya.index', ['tab' => 'penelitian-'.$validated['tipe']])->with('success', 'Data penelitian berhasil ditambahkan.');
     }
 }

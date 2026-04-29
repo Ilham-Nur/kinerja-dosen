@@ -12,14 +12,16 @@ class PenunjangController extends Controller
     {
         $validated = $request->validate([
             'nama_kegiatan' => ['required', 'string'],
-            'file' => ['nullable', 'string'],
+            'file' => ['nullable', 'file', 'mimes:pdf,doc,docx,jpg,jpeg,png', 'max:2048'],
         ]);
 
         $user = auth()->user();
         $dosen = $user?->dosen;
         if (! $dosen) return back()->withInput()->with('error', 'Data dosen tidak ditemukan untuk akun ini.');
 
-        Penunjang::create([...$validated, 'dosen_id' => $dosen->id, 'status' => 'pending', 'created_by' => $user->id]);
+        $filePath = $request->file('file')?->store('kinerja/penunjang', 'public');
+
+        Penunjang::create([...$validated, 'file' => $filePath, 'dosen_id' => $dosen->id, 'status' => 'pending', 'created_by' => $user->id]);
         return redirect()->route('kinerja-saya.index', ['tab' => 'penunjang'])->with('success', 'Data penunjang berhasil ditambahkan.');
     }
 }
