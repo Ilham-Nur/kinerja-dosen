@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Pengajaran;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class PengajaranController extends Controller
 {
+    private array $semesterOptions = ['Ganjil', 'Genap'];
     public function index(): View
     {
         $user = auth()->user();
@@ -26,7 +28,9 @@ class PengajaranController extends Controller
 
     public function create(): View
     {
-        return view('kinerja-saya.create');
+        return view('kinerja-saya.create', [
+            'semesterOptions' => $this->semesterOptions,
+        ]);
     }
 
     public function store(Request $request): RedirectResponse
@@ -34,7 +38,7 @@ class PengajaranController extends Controller
         $validated = $request->validate([
             'mata_kuliah' => ['required', 'string'],
             'sks' => ['required', 'numeric'],
-            'semester' => ['required', 'string'],
+            'semester' => ['required', Rule::in($this->semesterOptions)],
         ]);
 
         $user = auth()->user();
@@ -57,4 +61,52 @@ class PengajaranController extends Controller
             ->route('kinerja-saya.index')
             ->with('success', 'Data pengajaran berhasil ditambahkan.');
     }
+
+    public function edit(Pengajaran $pengajaran): View
+    {
+        $this->authorizeOwnership($pengajaran);
+
+        return view('kinerja-saya.edit', [
+            'pengajaran' => $pengajaran,
+            'semesterOptions' => $this->semesterOptions,
+        ]);
+    }
+
+    public function update(Request $request, Pengajaran $pengajaran): RedirectResponse
+    {
+        $this->authorizeOwnership($pengajaran);
+
+        $validated = $request->validate([
+            'mata_kuliah' => ['required', 'string'],
+            'sks' => ['required', 'numeric'],
+            'semester' => ['required', Rule::in($this->semesterOptions)],
+        ]);
+
+        $pengajaran->update([
+            'mata_kuliah' => $validated['mata_kuliah'],
+            'sks' => $validated['sks'],
+            'semester' => $validated['semester'],
+            'status' => 'pending',
+        ]);
+
+        return redirect()->route('kinerja-saya.index')->with('success', 'Data pengajaran berhasil diperbarui.');
+    }
+
+    public function destroy(Pengajaran $pengajaran): RedirectResponse
+    {
+        $this->authorizeOwnership($pengajaran);
+
+        $pengajaran->delete();
+
+        return redirect()->route('kinerja-saya.index')->with('success', 'Data pengajaran berhasil dihapus.');
+    }
+
+
+    private function authorizeOwnership(Pengajaran $pengajaran): void
+    {
+        $dosenId = auth()->user()?->dosen?->id;
+
+        abort_unless($dosenId && $pengajaran->dosen_id === $dosenId, 403);
+    }
 }
+

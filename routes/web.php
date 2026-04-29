@@ -15,5 +15,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/kinerja-saya', [PengajaranController::class, 'index'])->name('kinerja-saya.index');
     Route::get('/kinerja-saya/create', [PengajaranController::class, 'create'])->name('kinerja-saya.create');
     Route::post('/kinerja-saya', [PengajaranController::class, 'store'])->name('kinerja-saya.store');
+    Route::get('/kinerja-saya/{pengajaran}/edit', [PengajaranController::class, 'edit'])->name('kinerja-saya.edit');
+    Route::put('/kinerja-saya/{pengajaran}', [PengajaranController::class, 'update'])->name('kinerja-saya.update');
+    Route::delete('/kinerja-saya/{pengajaran}', [PengajaranController::class, 'destroy'])->name('kinerja-saya.destroy');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
