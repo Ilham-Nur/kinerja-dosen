@@ -2,8 +2,14 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DosenController;
 use App\Http\Controllers\PengajaranController;
 use Illuminate\Support\Facades\Route;
+
+
+Route::get('/dosens', [DosenController::class, 'index'])->name('dosens.index');
+Route::get('/dosens/create', [DosenController::class, 'create'])->name('dosens.create');
+Route::post('/dosens', [DosenController::class, 'store'])->name('dosens.store');
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
