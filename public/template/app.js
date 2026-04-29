@@ -30,7 +30,12 @@ const SidebarManager = (() => {
     // Desktop toggle
     toggleBtn?.addEventListener('click', () => {
       if (window.innerWidth <= 768) {
-        openMobile();
+        const isOpen = sidebar.classList.contains('mobile-open');
+        if (isOpen) {
+          closeMobile();
+        } else {
+          openMobile();
+        }
       } else {
         toggleCollapse();
       }
@@ -323,21 +328,116 @@ const PageLoader = (() => {
    7. TABLE UTILS
    ============================================================ */
 const TableUtils = (() => {
-  function init() {
-    // Search filter
-    document.querySelectorAll('[data-table-search]').forEach(input => {
-      const tableId = input.getAttribute('data-table-search');
-      const table   = document.getElementById(tableId);
-      if (!table) return;
+  const PAGE_SIZE = 10;
 
-      input.addEventListener('input', () => {
-        const q = input.value.toLowerCase().trim();
-        table.querySelectorAll('tbody tr').forEach(row => {
-          const text = row.textContent.toLowerCase();
-          row.style.display = (!q || text.includes(q)) ? '' : 'none';
+  function init() {
+    const tables = document.querySelectorAll('.table');
+    tables.forEach((table, index) => setupTable(table, index + 1));
+  }
+
+  function setupTable(table, sequence) {
+    const tbody = table.querySelector('tbody');
+    if (!tbody) return;
+
+    const rows = Array.from(tbody.querySelectorAll('tr'));
+    const hasDataRows = rows.some(row => row.querySelectorAll('td').length > 1);
+    if (!hasDataRows) return;
+
+    const wrapper = table.closest('.table-wrapper') || table.parentElement;
+    if (!wrapper || wrapper.dataset.tableEnhanced === 'true') return;
+
+    wrapper.dataset.tableEnhanced = 'true';
+
+    const controls = document.createElement('div');
+    controls.className = 'table-controls';
+
+    const searchId = `table-search-${sequence}`;
+    controls.innerHTML = `
+      <div class="table-controls-left">
+        <label for="${searchId}" class="table-search-label">Cari Data</label>
+        <input id="${searchId}" type="search" class="input table-search-input" placeholder="Ketik untuk mencari..." />
+      </div>
+      <div class="table-controls-right">
+        <span class="table-count"></span>
+      </div>
+    `;
+
+    wrapper.insertBefore(controls, table);
+
+    const pagination = document.createElement('div');
+    pagination.className = 'pagination table-pagination';
+    wrapper.appendChild(pagination);
+
+    const searchInput = controls.querySelector('.table-search-input');
+    const countLabel = controls.querySelector('.table-count');
+
+    let currentPage = 1;
+    let filteredRows = [...rows];
+
+    function render() {
+      const totalItems = filteredRows.length;
+      const totalPages = Math.max(1, Math.ceil(totalItems / PAGE_SIZE));
+      currentPage = Math.min(currentPage, totalPages);
+
+      const start = (currentPage - 1) * PAGE_SIZE;
+      const end = start + PAGE_SIZE;
+
+      rows.forEach(row => (row.style.display = 'none'));
+      filteredRows.slice(start, end).forEach(row => (row.style.display = ''));
+
+      countLabel.textContent = `Menampilkan ${totalItems === 0 ? 0 : start + 1}-${Math.min(end, totalItems)} dari ${totalItems} data`;
+      renderPagination(totalPages);
+    }
+
+    function renderPagination(totalPages) {
+      pagination.innerHTML = '';
+      if (filteredRows.length <= PAGE_SIZE) return;
+
+      pagination.appendChild(createPageBtn('‹', currentPage > 1, () => {
+        currentPage -= 1;
+        render();
+      }));
+
+      for (let page = 1; page <= totalPages; page += 1) {
+        const btn = createPageBtn(String(page), true, () => {
+          currentPage = page;
+          render();
         });
-      });
+
+        if (page === currentPage) {
+          btn.classList.add('active');
+        }
+
+        pagination.appendChild(btn);
+      }
+
+      pagination.appendChild(createPageBtn('›', currentPage < totalPages, () => {
+        currentPage += 1;
+        render();
+      }));
+    }
+
+    function createPageBtn(label, enabled, onClick) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'page-btn';
+      btn.textContent = label;
+      btn.disabled = !enabled;
+      if (!enabled) {
+        btn.classList.add('disabled');
+      }
+      btn.addEventListener('click', onClick);
+      return btn;
+    }
+
+    searchInput.addEventListener('input', () => {
+      const keyword = searchInput.value.toLowerCase().trim();
+      filteredRows = rows.filter(row => row.textContent.toLowerCase().includes(keyword));
+      currentPage = 1;
+      render();
     });
+
+    render();
   }
 
   return { init };
