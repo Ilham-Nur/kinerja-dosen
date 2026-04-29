@@ -114,7 +114,7 @@ class PengajaranController extends Controller
     {
         $dosenId = auth()->user()?->dosen?->id;
 
-        abort_unless($dosenId && $pengajaran->dosen_id === $dosenId, 403);
+        abort_unless($dosenId && $pengajaran->dosen_id === $dosenId && $pengajaran->status === 'pending', 403);
     }
 
     private function queryByRole($query, ?string $role, ?int $dosenId)

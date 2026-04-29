@@ -35,5 +35,18 @@ Route::middleware('auth')->group(function () {
     Route::post('/kinerja-saya/pengabdian', [PengabdianController::class, 'store'])->name('kinerja-saya.pengabdian.store');
     Route::post('/kinerja-saya/penunjang', [PenunjangController::class, 'store'])->name('kinerja-saya.penunjang.store');
 
+    Route::get('/kinerja-saya/buku/{buku}/edit', [BukuController::class, 'edit'])->name('kinerja-saya.buku.edit');
+    Route::put('/kinerja-saya/buku/{buku}', [BukuController::class, 'update'])->name('kinerja-saya.buku.update');
+    Route::delete('/kinerja-saya/buku/{buku}', [BukuController::class, 'destroy'])->name('kinerja-saya.buku.destroy');
+    Route::get('/kinerja-saya/penelitian/{penelitian}/edit', [PenelitianController::class, 'edit'])->name('kinerja-saya.penelitian.edit');
+    Route::put('/kinerja-saya/penelitian/{penelitian}', [PenelitianController::class, 'update'])->name('kinerja-saya.penelitian.update');
+    Route::delete('/kinerja-saya/penelitian/{penelitian}', [PenelitianController::class, 'destroy'])->name('kinerja-saya.penelitian.destroy');
+    Route::get('/kinerja-saya/pengabdian/{pengabdian}/edit', [PengabdianController::class, 'edit'])->name('kinerja-saya.pengabdian.edit');
+    Route::put('/kinerja-saya/pengabdian/{pengabdian}', [PengabdianController::class, 'update'])->name('kinerja-saya.pengabdian.update');
+    Route::delete('/kinerja-saya/pengabdian/{pengabdian}', [PengabdianController::class, 'destroy'])->name('kinerja-saya.pengabdian.destroy');
+    Route::get('/kinerja-saya/penunjang/{penunjang}/edit', [PenunjangController::class, 'edit'])->name('kinerja-saya.penunjang.edit');
+    Route::put('/kinerja-saya/penunjang/{penunjang}', [PenunjangController::class, 'update'])->name('kinerja-saya.penunjang.update');
+    Route::delete('/kinerja-saya/penunjang/{penunjang}', [PenunjangController::class, 'destroy'])->name('kinerja-saya.penunjang.destroy');
+
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
