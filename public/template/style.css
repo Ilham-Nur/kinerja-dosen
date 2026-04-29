@@ -1461,13 +1461,14 @@ select.form-control {
   inset: 0;
   background: rgba(15, 23, 42, 0.5);
   z-index: 99;
-  display: none;
   opacity: 0;
+  pointer-events: none;
   transition: opacity var(--transition-base);
 }
 
 .sidebar-overlay.show {
   opacity: 1;
+  pointer-events: auto;
 }
 
 /* ── Grid Helpers ─────────────────────────────────────────── */
@@ -1562,24 +1563,28 @@ select.form-control {
 }
 
 
+.sidebar.collapsed .sidebar-item {
+  padding: 2px 8px;
+}
+
 .sidebar.collapsed .sidebar-link {
   justify-content: center;
-  padding: 10px;
+  padding: 10px 6px;
 }
 
 .sidebar.collapsed .sidebar-link.active {
-  background: rgba(37, 99, 235, 0.16);
+  background: rgba(37, 99, 235, 0.18);
   box-shadow: none;
 }
 
 .sidebar.collapsed .sidebar-link.active .sidebar-link-icon {
-  color: var(--primary-muted);
+  color: #fff;
 }
 
 .sidebar.collapsed .sidebar-brand,
 .sidebar.collapsed .sidebar-footer {
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 8px;
+  padding-right: 8px;
 }
 
 .table-controls {
@@ -1604,7 +1609,18 @@ select.form-control {
 }
 
 .table-search-input {
-  min-width: 220px;
+  min-width: 260px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 14px;
+  background: #fff;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.table-search-input:focus {
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
 }
 
 .table-pagination {
@@ -1627,10 +1643,6 @@ select.form-control {
 
   .sidebar.mobile-open {
     transform: translateX(0);
-  }
-
-  .sidebar-overlay {
-    display: block;
   }
 
   .main-content {

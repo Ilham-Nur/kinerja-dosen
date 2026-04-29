@@ -44,6 +44,13 @@ const SidebarManager = (() => {
     // Mobile overlay close
     overlay?.addEventListener('click', closeMobile);
 
+    // Close mobile sidebar after selecting menu
+    sidebar.querySelectorAll('.sidebar-link[href]').forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth <= 768) closeMobile();
+      });
+    });
+
     // Close mobile on resize to desktop
     window.addEventListener('resize', () => {
       if (window.innerWidth > 768) {
