@@ -46,5 +46,19 @@
     </div>
 
     <script src="{{ asset('template/app.js') }}"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            @if ($errors->any())
+                Toast.error('Validasi Gagal', @json($errors->first()));
+            @endif
+            @if (session('error'))
+                Toast.error('Gagal', @json(session('error')));
+            @endif
+            @if (session('success'))
+                Toast.success('Berhasil', @json(session('success')));
+            @endif
+        });
+    </script>
 </body>
 </html>
