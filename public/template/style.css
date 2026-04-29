@@ -1946,3 +1946,88 @@ select.form-control {
   color: var(--text-muted);
   text-align: center !important;
 }
+
+/* Admin compact mode */
+.dashboard-page-compact {
+  padding-top: 18px;
+}
+
+.compact-hero {
+  padding: 14px 18px;
+  margin-bottom: 12px;
+  border-radius: 12px;
+}
+
+.compact-hero .page-header-title {
+  font-size: 22px;
+  margin: 0;
+}
+
+.compact-summary-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.compact-main-grid {
+  grid-template-columns: 1.1fr .9fr 1.2fr;
+  gap: 10px;
+}
+
+.compact-card {
+  padding: 12px 14px;
+  border-radius: 10px;
+}
+
+.compact-card h3 {
+  font-size: 20px;
+}
+
+.compact-card p {
+  margin-bottom: 4px;
+  font-size: 12px;
+}
+
+.mini-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.mini-head .dashboard-section-title {
+  font-size: 14px;
+  margin: 0;
+}
+
+.mini-list,
+.rank-list {
+  display: grid;
+  gap: 6px;
+}
+
+.mini-list li,
+.rank-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 8px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+.rank-list p {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.rank-list small {
+  font-size: 11px;
+}
+
+@media (max-width: 1200px) {
+  .compact-summary-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .compact-main-grid { grid-template-columns: 1fr; }
+}
