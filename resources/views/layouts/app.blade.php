@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Aplikasi')</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
     <div style="display: flex; min-height: 100vh; font-family: Arial, sans-serif;">
