@@ -20,6 +20,14 @@
             </a>
         </div>
 
+
+        <div class="sidebar-item">
+            <a href="{{ route('dosens.index') }}" class="sidebar-link {{ request()->routeIs('dosens.*') ? 'active' : '' }}" data-page="dosens">
+                <span class="sidebar-link-icon"><i class="fa-solid fa-user-tie"></i></span>
+                <span class="sidebar-link-label">Data Dosen</span>
+            </a>
+        </div>
+
         <div class="sidebar-section-label">Akun</div>
         <div class="sidebar-item">
             <form method="POST" action="{{ route('logout') }}">
