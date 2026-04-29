@@ -113,4 +113,5 @@ document.addEventListener('DOMContentLoaded',()=>{
     showSub(activeSubTab || 'pengajaran-mk');
 });
 </script>
+@include('kinerja-saya.partials.confirm-script')
 @endsection

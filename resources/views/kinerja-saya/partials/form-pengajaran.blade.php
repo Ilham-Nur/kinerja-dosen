@@ -1,6 +1,6 @@
 <div class="card">
   <div class="card-header"><div><div class="card-title">Input Pengajaran</div><div class="card-subtitle">Tambah data mata kuliah</div></div></div>
-  <form method="POST" action="{{ route('kinerja-saya.store') }}" class="card-body">@csrf
+  <form data-confirm="true" data-confirm-title="Simpan Pengajaran?" data-confirm-body="Data pengajaran akan ditambahkan." method="POST" action="{{ route('kinerja-saya.store') }}" class="card-body">@csrf
     <div class="form-group"><label class="form-label">Mata Kuliah <span class="required">*</span></label><input name="mata_kuliah" class="form-control" required></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
       <div class="form-group"><label class="form-label">SKS <span class="required">*</span></label><input name="sks" type="number" class="form-control" required></div>
