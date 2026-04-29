@@ -7,9 +7,16 @@
     <nav class="sidebar-nav" aria-label="Sidebar navigation">
         <div class="sidebar-section-label">Utama</div>
         <div class="sidebar-item">
-            <a href="{{ route('dashboard.index') }}" class="sidebar-link active" data-page="index">
+            <a href="{{ route('dashboard.index') }}" class="sidebar-link {{ request()->routeIs('dashboard.index') ? 'active' : '' }}" data-page="index">
                 <span class="sidebar-link-icon"><i class="fa-solid fa-house"></i></span>
                 <span class="sidebar-link-label">Dashboard</span>
+            </a>
+        </div>
+
+        <div class="sidebar-item">
+            <a href="{{ route('kinerja-saya.index') }}" class="sidebar-link {{ request()->routeIs('kinerja-saya.*') ? 'active' : '' }}" data-page="kinerja-saya">
+                <span class="sidebar-link-icon"><i class="fa-solid fa-book"></i></span>
+                <span class="sidebar-link-label">Kinerja Saya</span>
             </a>
         </div>
 
