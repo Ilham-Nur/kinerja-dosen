@@ -1,7 +1,7 @@
 <aside id="sidebar" class="sidebar">
     <div class="sidebar-brand">
         <div class="sidebar-brand-icon"><i class="fa-solid fa-layer-group"></i></div>
-        <span class="sidebar-brand-name">AdminPanel</span>
+        <span class="sidebar-brand-name">Tracking Dosen</span>
     </div>
 
     <nav class="sidebar-nav" aria-label="Sidebar navigation">
