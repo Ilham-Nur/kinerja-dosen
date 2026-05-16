@@ -43,8 +43,12 @@
                             </td>
                             <td>
                                 <div class="table-actions">
-                                    <button type="button" class="btn btn-secondary" disabled>Edit</button>
-                                    <button type="button" class="btn btn-danger" disabled>Hapus</button>
+                                    <a href="{{ route('dosens.edit', $dosen) }}" class="btn btn-secondary">Edit</a>
+                                    <form data-confirm="true" data-confirm-type="danger" data-confirm-title="Hapus Dosen?" data-confirm-body="Data dosen, akun dosen terkait, dan seluruh data kinerjanya akan dihapus permanen." method="POST" action="{{ route('dosens.destroy', $dosen) }}">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">Hapus</button>
+                                    </form>
                                 </div>
                             </td>
                         </tr>
@@ -61,4 +65,5 @@
     .status-pending{background:#fef3c7;color:#92400e}
     .ks-empty{background:#fff;border:1px dashed #d1d5db;border-radius:14px;padding:20px;color:#64748b}
 </style>
+@include('kinerja-saya.partials.confirm-script')
 @endsection

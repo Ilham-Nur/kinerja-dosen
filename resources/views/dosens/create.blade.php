@@ -30,7 +30,8 @@
         </div>
 
         <label class="check-row" for="buat_akun">
-            <input id="buat_akun" name="buat_akun" type="checkbox" value="1" {{ old('buat_akun') ? 'checked' : '' }}>
+            <input name="buat_akun" type="hidden" value="0">
+            <input id="buat_akun" name="buat_akun" type="checkbox" value="1" {{ old('buat_akun', '1') ? 'checked' : '' }}>
             <span>Buat akun user otomatis (username: NUPTK, password default: 123456)</span>
         </label>
 

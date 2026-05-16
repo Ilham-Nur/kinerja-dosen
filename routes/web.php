@@ -57,6 +57,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/dosens', [DosenController::class, 'index'])->name('dosens.index');
         Route::get('/dosens/create', [DosenController::class, 'create'])->name('dosens.create');
         Route::post('/dosens', [DosenController::class, 'store'])->name('dosens.store');
+        Route::get('/dosens/{dosen}/edit', [DosenController::class, 'edit'])->name('dosens.edit');
+        Route::put('/dosens/{dosen}', [DosenController::class, 'update'])->name('dosens.update');
+        Route::delete('/dosens/{dosen}', [DosenController::class, 'destroy'])->name('dosens.destroy');
 
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
         Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
